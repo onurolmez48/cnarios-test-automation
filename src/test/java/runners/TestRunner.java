@@ -12,7 +12,7 @@ import io.cucumber.junit.CucumberOptions;
 
 		glue = "steps",
 
-		tags = "@TC_001",
+		tags = "@TC_002",
 
 		dryRun = false,
 
