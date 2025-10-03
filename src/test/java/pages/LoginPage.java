@@ -6,10 +6,13 @@ import org.openqa.selenium.support.PageFactory;
 
 import testbase.BaseClass;
 
-public class LoginPageElements {
+public class LoginPage {
 
 	@FindBy(xpath = "//button[@type='button' and text()='Login']")
 	public WebElement loginBtn;
+
+	@FindBy(xpath = "//button[@type='button' and text()='Logout']")
+	public WebElement logoutBtn;
 
 	@FindBy(xpath = "//div[text()='Both fields are required.']")
 	public WebElement errMsg;
@@ -23,7 +26,13 @@ public class LoginPageElements {
 	@FindBy(xpath = "//div[text()='Invalid username or password.']")
 	public WebElement invalidMsg;
 
-	public LoginPageElements() {
+	@FindBy(xpath = "//h5[@class='MuiTypography-root MuiTypography-h5 text-center font-bold css-jcahak']")
+	public WebElement welcomeMsg;
+
+	@FindBy(xpath = "//p[@class='MuiTypography-root MuiTypography-body1 font-medium css-1o5u7u9']")
+	public WebElement dashboard;
+
+	public LoginPage() {
 		PageFactory.initElements(BaseClass.driver, this);
 	}
 }

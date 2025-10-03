@@ -12,9 +12,9 @@ import io.cucumber.junit.CucumberOptions;
 
 		glue = "steps",
 
-		tags = "@TC_002",
-
 		dryRun = false,
+		
+		tags = "@LOGIN-FLOW",
 
 		monochrome = true,
 
