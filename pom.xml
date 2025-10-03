@@ -7,8 +7,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
-		<maven.compiler.source>22</maven.compiler.source>
-		<maven.compiler.target>22</maven.compiler.target>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
 	</properties>
 
 	<dependencies>
@@ -76,7 +76,7 @@
 				<configuration>
 					<argLine>-Duser.language=en -Duser.country=US</argLine>
 					<includes>
-						<includes> **/*OnurRunner.java </includes>
+						<includes> **/*TestRunner.java </includes>
 					</includes>
 				</configuration>
 			</plugin>
@@ -93,7 +93,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<projectName>TeamB</projectName>
+							<projectName>cnarios-test-automation</projectName>
 
 							<!-- output directory for the generated report -->
 							<outputDirectory>${project.build.directory}</outputDirectory>
