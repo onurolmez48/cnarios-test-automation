@@ -6,7 +6,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import testbase.BaseClass;
 
-public class LoginPage {
+public class LoginPageElements {
 
 	@FindBy(xpath = "//button[@type='button' and text()='Login']")
 	public WebElement loginBtn;
@@ -14,7 +14,16 @@ public class LoginPage {
 	@FindBy(xpath = "//div[text()='Both fields are required.']")
 	public WebElement errMsg;
 
-	public LoginPage() {
+	@FindBy(xpath = "//input[@type='text']")
+	public WebElement username;
+
+	@FindBy(xpath = "//input[@type='password']")
+	public WebElement password;
+
+	@FindBy(xpath = "//div[text()='Invalid username or password.']")
+	public WebElement invalidMsg;
+
+	public LoginPageElements() {
 		PageFactory.initElements(BaseClass.driver, this);
 	}
 }

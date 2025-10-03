@@ -1,13 +1,13 @@
 package testbase;
 
-import pages.LoginPage;
+import pages.LoginPageElements;
 
 public class PageInitializer extends BaseClass {
 
-	public static LoginPage loginPage;
+	public static LoginPageElements LoginPage;
 
 	public static void initialize() {
-		loginPage = new LoginPage();
+		LoginPage = new LoginPageElements();
 	}
 
 }
