@@ -252,6 +252,12 @@ public class CommonMethods extends PageInitializer {
 		return getWaitObject().until(ExpectedConditions.visibilityOf(element));
 	}
 
+	public static boolean waitForInvisibility(By locator) {
+
+		return getWaitObject().until(ExpectedConditions.invisibilityOfElementLocated(locator));
+
+	}
+
 	/**
 	 * This method waits until the provided element is clickable in page.
 	 * 

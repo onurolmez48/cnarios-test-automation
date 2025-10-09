@@ -13,8 +13,8 @@ import io.cucumber.junit.CucumberOptions;
 		glue = "steps",
 
 		dryRun = false,
-		
-		tags = "@LOGIN-FLOW",
+
+		tags = "@E-commerce",
 
 		monochrome = true,
 
