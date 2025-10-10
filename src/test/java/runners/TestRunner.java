@@ -14,7 +14,7 @@ import io.cucumber.junit.CucumberOptions;
 
 		dryRun = false,
 
-		tags = "@E-commerce",
+		tags = "@Product_Purchasing",
 
 		monochrome = true,
 
