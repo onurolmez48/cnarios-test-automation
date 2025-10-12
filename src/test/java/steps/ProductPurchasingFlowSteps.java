@@ -9,78 +9,44 @@ import org.openqa.selenium.WebElement;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import utils.CommonMethods;
-import utils.ConfigsReader;
 
-public class ProductPurchasingFlow extends CommonMethods {
+public class ProductPurchasingFlowSteps extends CommonMethods {
 
 	@When("User click Add to Card on {string}")
 	public void user_click_add_to_card_on_wireless_headphones(String productName) {
-		List<WebElement> productCards = driver.findElements(By.cssSelector("div.MuiCardContent-root"));
-		for (WebElement names : productCards) {
-			try {
-				WebElement productNameElement = names
-						.findElement(By.cssSelector("div.MuiCardContent-root > h6.MuiTypography-h6"));
-				String currentProductName = productNameElement.getText();
-				if (currentProductName.equals(productName)) {
-					WebElement addToCartButton = names.findElement(By.cssSelector("button.MuiButton-root"));
-					addToCartButton.click();
-					System.out.println("Clicked 'Add to Cart' for: " + productName);
-					break;
-				}
-			} catch (Exception e) {
-				e.getMessage();
-			}
-		}
+		productPurchasingPage.addProductToCartByName(productName);
 	}
 
 	@When("User click cart icon in the navbar")
 	public void user_click_cart_icon_in_the_navbar() {
-		waitForClickability(productPurchasingPage.navbar);
-		click(productPurchasingPage.navbar);
-		wait(2);
+		productPurchasingPage.goToCart();
 	}
 
 	@Then("User verify Wireless Headphones is diplayed with correct price and quantity")
 	public void user_verify_wireless_headphones_is_diplayed_with_correct_price_and_quantity() {
 		String expectedAmount = "120";
-		String actualAmount = productPurchasingPage.totalAmount.getText();
 		String expectedQuantity = "1";
-		String actualQuantity = productPurchasingPage.quantity.getText();
+
+		String actualAmount = productPurchasingPage.totalAmount.getText();
+		String actualQuantity = productPurchasingPage.getQuantityText();
+
 		Assert.assertTrue("The total amount does NOT matches", actualAmount.contains(expectedAmount));
 		Assert.assertEquals("The quantity does NOT matches", expectedQuantity, actualQuantity);
 	}
 
 	@When("User add {string} to card")
 	public void user_add_to_card(String product) {
-		for (WebElement names : productPurchasingPage.productsCard) {
-			try {
-				WebElement productNameElement = names
-						.findElement(By.cssSelector("div.MuiCardContent-root > h6.MuiTypography-h6"));
-				String currentProductName = productNameElement.getText();
-				if (currentProductName.equals(product)) {
-					WebElement addToCartButton = names.findElement(By.cssSelector("button.MuiButton-root"));
-					addToCartButton.click();
-					System.out.println("Clicked 'Add to Cart' for: " + product);
-					break;
-				}
-			} catch (Exception e) {
-				e.getMessage();
-			}
-		}
+		productPurchasingPage.addProductToCartByName(product);
 	}
 
 	@When("User open the cart")
 	public void user_open_the_cart() {
-		waitForClickability(productPurchasingPage.navbar);
-		click(productPurchasingPage.navbar);
-		wait(2);
+		productPurchasingPage.goToCart();
 	}
 
 	@When("User click + button to increase quantity")
 	public void user_click_button_to_increase_quantity() {
-		waitForClickability(productPurchasingPage.increaseButton);
-		click(productPurchasingPage.increaseButton);
-		wait(2);
+		productPurchasingPage.increaseFirstProductQuantity(2);
 	}
 
 	@Then("User verify quantity increases and total updates")
@@ -103,12 +69,11 @@ public class ProductPurchasingFlow extends CommonMethods {
 	public void user_click_button_to_decrease_quantity() {
 		waitForClickability(productPurchasingPage.decreaseButton);
 		click(productPurchasingPage.decreaseButton);
-		wait(2);
 	}
 
 	@Then("User verify quantity decrease and total updates")
 	public void user_verify_quantity_decrease_and_total_updates() {
-		String actualQuantity = productPurchasingPage.quantity.getText();
+		String actualQuantity = productPurchasingPage.getQuantityText();
 		String expectedQuantity = "1";
 		Assert.assertEquals("The product quantity has not increased to 2!", expectedQuantity, actualQuantity);
 		String singlePriceText = productPurchasingPage.singleProduct.getText();
@@ -118,19 +83,13 @@ public class ProductPurchasingFlow extends CommonMethods {
 		int expectedTotal = Integer.parseInt(cleanedSinglePrice) * Integer.parseInt(actualQuantity);
 		Assert.assertEquals("The total amount has been calculated incorrectly!", expectedTotal,
 				Integer.parseInt(cleanedTotalAmount));
-		System.out.println("Sinlge product price: $" + cleanedSinglePrice + "Product quantity: " + actualQuantity
-				+ " Total Amount: " + totalAmountText);
 	}
 
 	@Then("User verify {string} is no longer in the cart")
 	public void user_verify_is_no_longer_in_the_cart(String product) {
 		List<WebElement> productsElement = driver.findElements(
 				By.xpath("//div[contains(@class, 'MuiCard-root') and .//p[contains(text(), '\" + product + \"')]]"));
-		if (productsElement.isEmpty()) {
-			System.out.println("Başarılı: '" + product + "' ürünü sepetten kaldırıldı.");
-		} else {
-			System.out.println("Başarısız: '" + product + "' ürünü sepetten kaldırılmadı.");
-		}
+		Assert.assertTrue(productsElement.isEmpty());
 
 	}
 
@@ -142,8 +101,7 @@ public class ProductPurchasingFlow extends CommonMethods {
 
 	@When("User click Proceed to Address button")
 	public void user_click_proceed_to_address_button() {
-		click(productPurchasingPage.proceedAddressButton);
-
+		productPurchasingPage.proceedToAddress();
 	}
 
 	@When("User leave all address fields empty")
@@ -164,38 +122,31 @@ public class ProductPurchasingFlow extends CommonMethods {
 
 	@Then("User enter valid first name {string}, last name {string}, address {string}")
 	public void user_enter_valid_first_name_last_name_address(String firstName, String lastName, String address) {
-		waitForClickability(productPurchasingPage.firstNameInput);
-		waitForClickability(productPurchasingPage.lastNameInput);
-		waitForClickability(productPurchasingPage.addressInput);
-		sendText(productPurchasingPage.firstNameInput, firstName);
-		sendText(productPurchasingPage.lastNameInput, lastName);
-		sendText(productPurchasingPage.addressInput, address);
-		wait(2);
+		productPurchasingPage.fillShippingDetailsAndProceed(firstName, lastName, address);
 	}
 
 	@Then("User click Proceed to Payment button")
 	public void user_click_proceed_to_payment_button() {
-		waitForClickability(productPurchasingPage.proceedPaymentButton);
-		click(productPurchasingPage.proceedPaymentButton);
+		productPurchasingPage.proceedToPayment();
 	}
 
 	@Then("User click Pay Now button")
 	public void user_click_pay_now_button() {
-		click(productPurchasingPage.payNowButton);
+		productPurchasingPage.clickPayNow();
 	}
 
 	@Then("User Verify success message with billing details and total is displayed")
 	public void user_verify_success_message_with_billing_details_and_total_is_displayed() {
 		String expectedSuccessMessage = "Order Placed Successfully!";
-		String actualSuccessMessage = driver.findElement(By.cssSelector(".MuiTypography-h5")).getText();
-		String expectedFirstLastName = ConfigsReader.getProperty("firstname") + " "
-				+ ConfigsReader.getProperty("lastname");
-		String actualFirstLastName = productPurchasingPage.firstLastNameBill.getText();
-		String expectedAddress = ConfigsReader.getProperty("address");
-		String actualAddress = productPurchasingPage.addressBill.getText();
-		String total = productPurchasingPage.totalAmountBill.getText();
+		String expectedFirstLastName = "Onur Olmez";
+		String expectedAddress = "Marmaris";
 		String expected = "60";
-		System.out.println(total.contains(expected));
+
+		String actualSuccessMessage = productPurchasingPage.getSuccessMessageFromBill();
+		String actualFirstLastName = productPurchasingPage.getFullNameFromBill();
+		String actualAddress = productPurchasingPage.getAddressFromBill();
+		String total = productPurchasingPage.getTotalAmountFromBill();
+
 		Assert.assertTrue(total.contains(expected));
 		Assert.assertTrue(actualSuccessMessage.contains(expectedSuccessMessage));
 		Assert.assertTrue(actualFirstLastName.contains(expectedFirstLastName));
@@ -204,15 +155,14 @@ public class ProductPurchasingFlow extends CommonMethods {
 
 	@Then("User click Cancel button")
 	public void user_click_cancel_button() {
-		click(productPurchasingPage.cancelButton);
+		productPurchasingPage.clickCancelBtn();
 	}
 
 	@Then("User verify failure message and Go Home button are displayed")
 	public void user_verify_failure_message_and_go_home_button_are_displayed() {
 		String expectedFailure = "PaymentFailed";
-		String actualFailure = productPurchasingPage.failureElement.getText();
+		String actualFailure = productPurchasingPage.getFailureMessage();
 		String clean = actualFailure.replaceAll("[^a-zA-Z]", "");
-		System.out.println(clean);
 
 		Assert.assertTrue(clean.contains(expectedFailure));
 		Assert.assertTrue(productPurchasingPage.backToHomeButton.isDisplayed());
@@ -220,7 +170,7 @@ public class ProductPurchasingFlow extends CommonMethods {
 
 	@Then("User click Go Home button")
 	public void user_click_go_home_button() {
-		click(productPurchasingPage.goHomeButton);
+		productPurchasingPage.clickGoHomeBtn();
 	}
 
 	@Then("User verify product listing page is shown and navbar is empty")

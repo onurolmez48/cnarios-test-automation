@@ -1,5 +1,5 @@
 @Product_Purchasing
-Feature: E-Commerce-End-to-End-Purchasing-Flow
+Feature: MEDIUM: E-Commerce-End-to-End-Purchasing-Flow
 
 		Background:
 			Given User navigate to product listing page

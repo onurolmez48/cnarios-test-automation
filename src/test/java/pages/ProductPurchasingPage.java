@@ -1,16 +1,18 @@
 package pages;
 
-import java.util.Arrays;
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import testbase.BaseClass;
+import utils.CommonMethods;
 
-public class ProductPurchasingPage {
+public class ProductPurchasingPage extends CommonMethods {
 
+	// Elements
 	@FindBy(css = "div.MuiCardContent-root")
 	public List<WebElement> productsCard;
 
@@ -65,6 +67,9 @@ public class ProductPurchasingPage {
 	@FindBy(xpath = "//h6[text()='Order Summary:']/following-sibling::h6")
 	public WebElement totalAmountBill;
 
+	@FindBy(css = ".MuiTypography-h5")
+	public WebElement successMessage;
+
 	@FindBy(xpath = "//button[text()='Cancel']")
 	public WebElement cancelButton;
 
@@ -76,14 +81,106 @@ public class ProductPurchasingPage {
 
 	@FindBy(xpath = "//button[text()='Back to Home']")
 	public WebElement goHomeButton;
-	
+
 	@FindBy(xpath = "//button[contains(@class, 'MuiButton-containedPrimary')][1]")
 	public WebElement firstAddCartButton;
 
-	public List<String> productsNames = Arrays.asList("Wireless Headphones", "Smartphone Stand", "Bluetooth Speaker",
-			"Laptop Backpack", "Fitness Band");
-
+	// Constructor
 	public ProductPurchasingPage() {
 		PageFactory.initElements(BaseClass.driver, this);
 	}
+
+	// Methods
+	public void goToCart() {
+		waitForClickability(navbar);
+		click(navbar);
+	}
+
+	public void proceedToPayment() {
+		waitForClickability(proceedPaymentButton);
+		click(proceedPaymentButton);
+	}
+
+	public void proceedToAddress() {
+		waitForClickability(proceedAddressButton);
+		click(proceedAddressButton);
+	}
+
+	public void clickPayNow() {
+		waitForClickability(payNowButton);
+		click(payNowButton);
+	}
+
+	public void clickCancelBtn() {
+		waitForClickability(cancelButton);
+		click(cancelButton);
+	}
+
+	public void clickBackToHomeBtn() {
+		waitForClickability(backToHomeButton);
+		click(backToHomeButton);
+	}
+
+	public void clickGoHomeBtn() {
+		waitForClickability(goHomeButton);
+		click(goHomeButton);
+	}
+
+	public void increaseFirstProductQuantity(int count) {
+		for (int i = 0; i < count; i++) {
+			click(increaseButton);
+		}
+	}
+
+	public String getAddressFromBill() {
+		return addressBill.getText();
+	}
+
+	public String getFullNameFromBill() {
+		return firstLastNameBill.getText();
+	}
+
+	public String getTotalAmountFromBill() {
+		return totalAmountBill.getText();
+	}
+
+	public String getSuccessMessageFromBill() {
+		return successMessage.getText();
+	}
+
+	public String getFailureMessage() {
+		return failureElement.getText();
+	}
+
+	public String getQuantityText() {
+		return quantity.getText();
+	}
+
+	public void fillShippingDetailsAndProceed(String firstName, String lastName, String address) {
+		waitForClickability(firstNameInput);
+		waitForClickability(lastNameInput);
+		waitForClickability(addressInput);
+		sendText(firstNameInput, firstName);
+		sendText(lastNameInput, lastName);
+		sendText(addressInput, address);
+	}
+
+	public void addProductToCartByName(String productName) {
+		List<WebElement> productCards = productsCard;
+		for (WebElement names : productCards) {
+			try {
+				WebElement productNameElement = names
+						.findElement(By.cssSelector("div.MuiCardContent-root > h6.MuiTypography-h6"));
+				String currentProductName = productNameElement.getText();
+				if (currentProductName.equals(productName)) {
+					WebElement addToCartButton = names.findElement(By.cssSelector("button.MuiButton-root"));
+					addToCartButton.click();
+					break;
+				}
+			} catch (Exception e) {
+				e.getMessage();
+			}
+		}
+	}
+
 }

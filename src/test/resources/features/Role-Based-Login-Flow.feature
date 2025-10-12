@@ -1,5 +1,5 @@
 @LOGIN-FLOW
-Feature: User input fields validation
+Feature: EASY: User input fields validation
 
 	@TC_001
 	Scenario: Empty fields validation
@@ -10,7 +10,7 @@ Feature: User input fields validation
 	@TC_002
 	Scenario: Invalid credentials
 		Given User navigate to login page
-		When User enter username "wrongUser" and password "wrongPass"
+		When User enter username wrongUsername and password wrongPassword
 		And User click on login button
 		Then User verify the error message "Invalid username or password." should be displayed
 		
