@@ -1,5 +1,5 @@
 @E-commerce
-Feature: E-commerce Product Filtering & Search
+Feature: HARD: E-Commerce-End-to-End-Purchasing-Flow
 	
 	@PF_001
 	Scenario: Filter products by category

@@ -1,16 +1,19 @@
 package testbase;
 
 import pages.LoginPage;
-import pages.ProductFilteringSearchPage;
+import pages.ProductSearchPage;
+import pages.ProductPurchasingPage;
 
 public class PageInitializer extends BaseClass {
 
 	public static LoginPage loginPage;
-	public static ProductFilteringSearchPage productFilteringPage;
+	public static ProductSearchPage productSearchPage;
+	public static ProductPurchasingPage productPurchasingPage;
 
 	public static void initialize() {
 		loginPage = new LoginPage();
-		productFilteringPage = new ProductFilteringSearchPage();
+		productSearchPage = new ProductSearchPage();
+		productPurchasingPage = new ProductPurchasingPage();
 	}
 
 }
