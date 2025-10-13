@@ -71,7 +71,7 @@ public class ProductSearchPageSteps extends CommonMethods {
 	}
 
 	@When("User enable In Stock Only filter")
-	public void user_enable_ın_stock_only_filter() {
+	public void user_enable_in_stock_only_filter() {
 		waitForClickability(productSearchPage.stockCheckBox);
 		click(productSearchPage.stockCheckBox);
 	}

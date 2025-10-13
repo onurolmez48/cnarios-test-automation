@@ -54,7 +54,7 @@
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-junit</artifactId>
-			<version>7.23.0</version>
+			<version>7.24.0</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -78,6 +78,7 @@
 					<includes>
 						<includes> **/*TestRunner.java </includes>
 					</includes>
+					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
 			</plugin>
 

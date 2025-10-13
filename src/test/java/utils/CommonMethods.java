@@ -2,10 +2,15 @@ package utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -15,12 +20,11 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import com.google.common.io.Files;
 
 import testbase.PageInitializer;
 
@@ -358,7 +362,7 @@ public class CommonMethods extends PageInitializer {
 		String destination = Constants.SCREENSHOT_FILEPATH + fileName + getTimeStamp() + ".png";
 
 		try {
-			Files.copy(source, new File(destination));
+			Files.copy(source.toPath(), Paths.get(destination));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -441,6 +445,54 @@ public class CommonMethods extends PageInitializer {
 			System.out.println("Unable to clear field: " + fieldName);
 		}
 
+	}
+
+	public static ChromeOptions getChromeOptionsWithDownloadPath(String downloadPath) {
+		Map<String, Object> chromePrefs = new HashMap<>();
+		chromePrefs.put("profile.default_content_settings.popups", 0);
+		chromePrefs.put("download.default_directory", downloadPath);
+
+		ChromeOptions options = new ChromeOptions();
+		options.setExperimentalOption("prefs", chromePrefs);
+		return options;
+	}
+
+	public static String getDownloadsFolderPath() {
+		return System.getProperty("user.home") + "\\Downloads";
+	}
+
+	public static String getExpectedFileName() {
+		String firstName = ConfigsReader.getProperty("firstname");
+		String lastName = ConfigsReader.getProperty("lastname");
+		return firstName + "." + lastName + ".json";
+	}
+
+	public static String getExpectedDownloadFilePath() {
+		return getDownloadsFolderPath() + "\\" + getExpectedFileName();
+	}
+
+	public static boolean deleteIfExists(String filePath) {
+		File file = new File(filePath);
+		if (file.exists()) {
+			return file.delete();
+		}
+		return true;
+	}
+
+	public static void verifyFileIsDownloaded(String folderPath, String fileName, int timeoutSeconds) {
+		File file = new File(folderPath + "\\" + fileName);
+		int waited = 0;
+		while (!file.exists() && waited < timeoutSeconds) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			waited++;
+		}
+		if (!file.exists()) {
+			throw new AssertionError("File not downloaded: " + file.getAbsolutePath());
+		}
 	}
 
 }
