@@ -6,6 +6,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import testbase.BaseClass;
 import utils.CommonMethods;
+import utils.ConfigsReader;
 
 public class LoginPage extends CommonMethods {
 
@@ -40,6 +41,12 @@ public class LoginPage extends CommonMethods {
 	}
 
 	// Methods
+
+	public void navigateUrl() {
+		String url = ConfigsReader.getProperty("baseUrl") + ConfigsReader.getProperty("loginUrl");
+		driver.get(url);
+	}
+
 	public void loginWithCredentials(String user, String pass) {
 		enterUsername(user);
 		enterPassword(pass);
