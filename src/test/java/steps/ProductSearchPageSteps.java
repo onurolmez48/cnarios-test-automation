@@ -20,7 +20,7 @@ public class ProductSearchPageSteps extends CommonMethods {
 
 	@Given("User navigate to product listing page")
 	public void user_navigate_to_product_listing_page() {
-
+		productSearchPage.navigateUrl();
 	}
 
 	@When("User select category {string} from filter")
@@ -109,22 +109,15 @@ public class ProductSearchPageSteps extends CommonMethods {
 
 	@When("User Verify all filters are cleared")
 	public void user_verify_all_filters_are_cleared() {
-		String categoryText = productSearchPage.categoryBox.getText();
-		System.out.println(categoryText);
-		String expectedCat = "All";
-		String min = productSearchPage.minSlider.getAttribute("aria-valuenow");
-		String max = productSearchPage.maxSlider.getAttribute("aria-valuenow");
-		Assert.assertEquals(categoryText, expectedCat);
-		Assert.assertEquals(min, "0");
-		Assert.assertEquals(max, "80000");
+		Assert.assertEquals(productSearchPage.categoryBox.getText(), "All");
+		Assert.assertEquals(productSearchPage.minSlider.getAttribute("aria-valuenow"), "0");
+		Assert.assertEquals(productSearchPage.maxSlider.getAttribute("aria-valuenow"), "80000");
 		Assert.assertTrue(productSearchPage.stockCheckBox.isEnabled());
 	}
 
 	@Then("User verify full default product list is restored")
 	public void user_verify_full_default_product_list_is_restored() {
-		List<WebElement> products = driver
-				.findElements(By.xpath("//*[text() = 'Products']/following-sibling::div/p[1]"));
-		List<String> actualProductNames = products.stream().map(WebElement::getText).collect(Collectors.toList());
+		List<String> actualProductNames = productSearchPage.products.stream().map(WebElement::getText).collect(Collectors.toList());
 		Assert.assertEquals("Products does NOT matches", actualProductNames, productSearchPage.DEFAULT_PRODUCT_NAMES);
 	}
 

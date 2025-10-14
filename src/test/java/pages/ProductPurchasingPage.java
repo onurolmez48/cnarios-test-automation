@@ -9,6 +9,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import testbase.BaseClass;
 import utils.CommonMethods;
+import utils.ConfigsReader;
 
 public class ProductPurchasingPage extends CommonMethods {
 
@@ -91,6 +92,12 @@ public class ProductPurchasingPage extends CommonMethods {
 	}
 
 	// Methods
+	
+	public void navigateUrl() {
+		String url = ConfigsReader.getProperty("baseUrl") + ConfigsReader.getProperty("productPurchasingUrl");
+		driver.get(url);
+	}
+	
 	public void goToCart() {
 		waitForClickability(navbar);
 		click(navbar);
@@ -158,10 +165,10 @@ public class ProductPurchasingPage extends CommonMethods {
 
 	public void fillShippingDetailsAndProceed(String firstName, String lastName, String address) {
 		waitForClickability(firstNameInput);
-		waitForClickability(lastNameInput);
-		waitForClickability(addressInput);
 		sendText(firstNameInput, firstName);
+		waitForClickability(lastNameInput);
 		sendText(lastNameInput, lastName);
+		waitForClickability(addressInput);
 		sendText(addressInput, address);
 	}
 

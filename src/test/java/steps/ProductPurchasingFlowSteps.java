@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import messages.utils.ProductPurchasingMessages;
 import utils.CommonMethods;
 
 public class ProductPurchasingFlowSteps extends CommonMethods {
@@ -26,12 +27,9 @@ public class ProductPurchasingFlowSteps extends CommonMethods {
 	public void user_verify_wireless_headphones_is_diplayed_with_correct_price_and_quantity() {
 		String expectedAmount = "120";
 		String expectedQuantity = "1";
-
-		String actualAmount = productPurchasingPage.totalAmount.getText();
-		String actualQuantity = productPurchasingPage.getQuantityText();
-
-		Assert.assertTrue("The total amount does NOT matches", actualAmount.contains(expectedAmount));
-		Assert.assertEquals("The quantity does NOT matches", expectedQuantity, actualQuantity);
+		Assert.assertTrue("The total amount does NOT matches",
+				productPurchasingPage.totalAmount.getText().contains(expectedAmount));
+		Assert.assertEquals("The quantity does NOT matches", expectedQuantity, productPurchasingPage.getQuantityText());
 	}
 
 	@When("User add {string} to card")
@@ -51,18 +49,17 @@ public class ProductPurchasingFlowSteps extends CommonMethods {
 
 	@Then("User verify quantity increases and total updates")
 	public void user_verify_quantity_increases_and_total_updates() {
-		String actualQuantity = productPurchasingPage.quantity.getText();
 		String expectedQuantity = "2";
-		Assert.assertEquals("The product quantity has not increased to 2!", expectedQuantity, actualQuantity);
+		Assert.assertEquals("The product quantity has not increased to 2!", expectedQuantity,productPurchasingPage.quantity.getText());
 		String singlePriceText = productPurchasingPage.singleProduct.getText();
 		String cleanedSinglePrice = singlePriceText.replaceAll("[^\\d]", "");
 		String totalAmountText = productPurchasingPage.totalAmount.getText();
 		String cleanedTotalAmount = totalAmountText.replaceAll("[^\\d]", "");
-		int expectedTotal = Integer.parseInt(cleanedSinglePrice) * Integer.parseInt(actualQuantity);
-		Assert.assertEquals("The total amount has been calculated incorrectly!", expectedTotal,
-				Integer.parseInt(cleanedTotalAmount));
-		System.out.println("Single product price: $" + cleanedSinglePrice + "Product quantity: " + actualQuantity
-				+ " Total Amount: " + totalAmountText);
+		
+		int expectedTotal = Integer.parseInt(cleanedSinglePrice) * Integer.parseInt(productPurchasingPage.quantity.getText());
+		Assert.assertEquals("The total amount has been calculated incorrectly!", expectedTotal, Integer.parseInt(cleanedTotalAmount));
+		System.out.println("Single product price: $" + cleanedSinglePrice + "Product quantity: "
+				+ productPurchasingPage.quantity.getText() + " Total Amount: " + totalAmountText);
 	}
 
 	@Then("User click - button to decrease quantity")
@@ -73,14 +70,13 @@ public class ProductPurchasingFlowSteps extends CommonMethods {
 
 	@Then("User verify quantity decrease and total updates")
 	public void user_verify_quantity_decrease_and_total_updates() {
-		String actualQuantity = productPurchasingPage.getQuantityText();
 		String expectedQuantity = "1";
-		Assert.assertEquals("The product quantity has not increased to 2!", expectedQuantity, actualQuantity);
+		Assert.assertEquals("The product quantity has not increased to 2!", expectedQuantity, productPurchasingPage.getQuantityText());
 		String singlePriceText = productPurchasingPage.singleProduct.getText();
 		String cleanedSinglePrice = singlePriceText.replaceAll("[^\\d]", "");
 		String totalAmountText = productPurchasingPage.totalAmount.getText();
 		String cleanedTotalAmount = totalAmountText.replaceAll("[^\\d]", "");
-		int expectedTotal = Integer.parseInt(cleanedSinglePrice) * Integer.parseInt(actualQuantity);
+		int expectedTotal = Integer.parseInt(cleanedSinglePrice) * Integer.parseInt(productPurchasingPage.getQuantityText());
 		Assert.assertEquals("The total amount has been calculated incorrectly!", expectedTotal,
 				Integer.parseInt(cleanedTotalAmount));
 	}
@@ -142,15 +138,10 @@ public class ProductPurchasingFlowSteps extends CommonMethods {
 		String expectedAddress = "Marmaris";
 		String expected = "60";
 
-		String actualSuccessMessage = productPurchasingPage.getSuccessMessageFromBill();
-		String actualFirstLastName = productPurchasingPage.getFullNameFromBill();
-		String actualAddress = productPurchasingPage.getAddressFromBill();
-		String total = productPurchasingPage.getTotalAmountFromBill();
-
-		Assert.assertTrue(total.contains(expected));
-		Assert.assertTrue(actualSuccessMessage.contains(expectedSuccessMessage));
-		Assert.assertTrue(actualFirstLastName.contains(expectedFirstLastName));
-		Assert.assertEquals(expectedAddress, actualAddress);
+		Assert.assertTrue(productPurchasingPage.getTotalAmountFromBill().contains(expected));
+		Assert.assertTrue(productPurchasingPage.getSuccessMessageFromBill().contains(expectedSuccessMessage));
+		Assert.assertTrue(productPurchasingPage.getFullNameFromBill().contains(expectedFirstLastName));
+		Assert.assertEquals(expectedAddress, productPurchasingPage.getAddressFromBill());
 	}
 
 	@Then("User click Cancel button")
@@ -160,11 +151,8 @@ public class ProductPurchasingFlowSteps extends CommonMethods {
 
 	@Then("User verify failure message and Go Home button are displayed")
 	public void user_verify_failure_message_and_go_home_button_are_displayed() {
-		String expectedFailure = "PaymentFailed";
 		String actualFailure = productPurchasingPage.getFailureMessage();
-		String clean = actualFailure.replaceAll("[^a-zA-Z]", "");
-
-		Assert.assertTrue(clean.contains(expectedFailure));
+		Assert.assertTrue(actualFailure.replaceAll("[^a-zA-Z]", "").contains(ProductPurchasingMessages.PAYMENT_FAIL));
 		Assert.assertTrue(productPurchasingPage.backToHomeButton.isDisplayed());
 	}
 

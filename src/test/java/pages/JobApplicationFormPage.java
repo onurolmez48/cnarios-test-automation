@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import testbase.BaseClass;
 import utils.CommonMethods;
+import utils.ConfigsReader;
 
 public class JobApplicationFormPage extends CommonMethods {
 
@@ -120,6 +121,12 @@ public class JobApplicationFormPage extends CommonMethods {
 	}
 
 	// Methods
+
+	public void navigateUrl() {
+		String url = ConfigsReader.getProperty("baseUrl") + ConfigsReader.getProperty("jobAppUrl");
+		driver.get(url);
+	}
+
 	public void validPersonalDetails(String salutation, String firstName, String lastName, String email,
 			String mobile) {
 		sendText(salutationInput, salutation);

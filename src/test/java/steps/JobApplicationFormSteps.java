@@ -10,6 +10,7 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import messages.utils.JobApplicationMessages;
 import utils.CommonMethods;
 
 public class JobApplicationFormSteps extends CommonMethods {
@@ -20,7 +21,7 @@ public class JobApplicationFormSteps extends CommonMethods {
 
 	@Given("Navigate to url")
 	public void navigate_to_url() {
-
+		jobApplicationPage.navigateUrl();
 	}
 
 	@When("User enter valid input forms")
@@ -96,9 +97,8 @@ public class JobApplicationFormSteps extends CommonMethods {
 
 	@Then("User verify success snackbar message")
 	public void user_verify_success_snackbar_message() {
-		String expectedSuccessMsg = "Application Submitted Successfully!";
 		Assert.assertEquals("Success message is NOT displayed !!", jobApplicationPage.getSuccessText(),
-				expectedSuccessMsg);
+				JobApplicationMessages.SUBMITTED_MESSAGE);
 	}
 
 	@When("User enter invalid email {string}")
@@ -129,9 +129,8 @@ public class JobApplicationFormSteps extends CommonMethods {
 
 	@Then("User verify email error helper text is shown")
 	public void user_verify_email_error_helper_text_is_shown() {
-		String expectedMessage = "Enter a valid email";
-		String actualMessage = jobApplicationPage.getInvalidEmailText();
-		Assert.assertEquals("The invalid messages does not mathces", actualMessage, expectedMessage);
+		Assert.assertEquals("The invalid messages does not mathces", jobApplicationPage.getInvalidEmailText(),
+				JobApplicationMessages.ENTER_VALID_EMAIL);
 		scrollUp(400);
 	}
 
@@ -142,9 +141,8 @@ public class JobApplicationFormSteps extends CommonMethods {
 
 	@Then("User verify snackbar shows error message")
 	public void user_verify_snackbar_shows_error_message() {
-		String expectedErr = "Only .pdf or .docx allowed";
-		String actualErr = jobApplicationPage.getInvalidResumeText();
-		Assert.assertEquals("The error messages is NOT matches!!", actualErr, expectedErr);
+		Assert.assertEquals("The error messages is NOT matches!!", jobApplicationPage.getInvalidResumeText(),
+				JobApplicationMessages.PDF_ERR);
 	}
 
 	@When("User type {string} in skills input and press enter")

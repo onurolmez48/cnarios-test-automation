@@ -10,11 +10,15 @@ import org.openqa.selenium.support.PageFactory;
 
 import testbase.BaseClass;
 import utils.CommonMethods;
+import utils.ConfigsReader;
 
 public class ProductSearchPage extends CommonMethods {
 
 	@FindBy(xpath = "//ul[@role='listbox']/li")
 	public List<WebElement> category;
+
+	@FindBy(xpath = "//*[text() = 'Products']/following-sibling::div/p[1]")
+	public List<WebElement> products;
 
 	@FindBy(xpath = "//div[@role='combobox']")
 	public WebElement categoryBox;
@@ -49,6 +53,12 @@ public class ProductSearchPage extends CommonMethods {
 	}
 
 	// Methods
+
+	public void navigateUrl() {
+		String url = ConfigsReader.getProperty("baseUrl") + ConfigsReader.getProperty("productFilteringUrl");
+		driver.get(url);
+	}
+
 	public void clickResetFilters() {
 		waitForClickability(resetFilterBtn);
 		click(resetFilterBtn);

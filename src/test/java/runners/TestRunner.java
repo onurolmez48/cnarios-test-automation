@@ -14,7 +14,7 @@ import io.cucumber.junit.CucumberOptions;
 
 		dryRun = false,
 
-		//tags = "@JAF_005",
+		//tags = "@JAF_002",
 
 		monochrome = true,
 
