@@ -101,9 +101,7 @@ Feature: User input fields validation
 
 ## 🧠 Future Enhancements
 
-- 🚀 **CI/CD pipeline** with GitHub Actions / Jenkins  
-- 📊 **Integration with Allure Reports**  
-- ⚡ **Parallel execution support**  
+- 🚀 **CI/CD pipeline** with GitHub Actions / Jenkins     
 - 🌐 **Cross-browser & headless mode tests**  
 - 🛠 **Environment configuration support** (dev, staging, prod)
 
