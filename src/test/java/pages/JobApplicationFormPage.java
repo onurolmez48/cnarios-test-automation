@@ -20,100 +20,100 @@ import utils.ConfigsReader;
 public class JobApplicationFormPage extends CommonMethods {
 
 	@FindBy(css = "input[name='salutation']")
-	public WebElement salutationInput;
+	private WebElement salutationInput;
 
 	@FindBy(css = "input[name='firstName']")
-	public WebElement firstNameInput;
+	private WebElement firstNameInput;
 
 	@FindBy(css = "input[name='lastName']")
-	public WebElement lastNameInput;
+	private WebElement lastNameInput;
 
 	@FindBy(css = "input[name='mobile']")
-	public WebElement mobileInput;
+	private WebElement mobileInput;
 
 	@FindBy(css = "input[name='email']")
-	public WebElement emailInput;
+	private WebElement emailInput;
 
 	@FindBy(xpath = "//label[contains(., 'Known Languages')]/following-sibling::label")
-	public List<WebElement> languages;
+	private List<WebElement> languages;
 
 	@FindBy(xpath = "//div[@role='radiogroup']//label")
-	public List<WebElement> genders;
+	private List<WebElement> genders;
 
 	@FindBy(xpath = "//div[@role='radiogroup']//label[contains(., 'Female')]")
-	public WebElement femaleGender;
+	private WebElement femaleGender;
 
 	@FindBy(xpath = "//div[@role='radiogroup']//label[contains(., 'Male')]")
-	public WebElement maleGender;
+	private WebElement maleGender;
 
 	@FindBy(xpath = "//div[@role='radiogroup']//label[contains(., 'Do Not Disclose')]")
-	public WebElement doNotDiscloseGender;
+	private WebElement doNotDiscloseGender;
 
 	@FindBy(xpath = "//div[@role='radiogroup']//label[contains(., 'Other')]")
-	public WebElement otherGender;
+	private WebElement otherGender;
 
 	@FindBy(xpath = "//input[@type='file']")
-	public WebElement resumeUploadInput;
+	private WebElement resumeUploadInput;
 
 	@FindBy(xpath = "//span[contains(., 'Add a Skill')]/ancestor::div[contains(@class, 'MuiInputBase-root')]//input")
-	public WebElement addToSkill;
+	private WebElement addToSkill;
 
 	@FindBy(xpath = "//div[@id='mui-component-select-jobRoles']")
-	public WebElement jobRolesInput;
+	private WebElement jobRolesInput;
 
 	@FindBy(xpath = "//ul[@role='listbox']//li")
-	public List<WebElement> jobRoles;
+	private List<WebElement> jobRoles;
 
 	@FindBy(xpath = "//span[contains(@class, 'MuiSlider-thumb')]")
-	public WebElement ratingSliderThumb;
+	private WebElement ratingSliderThumb;
 
 	@FindBy(css = ".MuiSlider-rail")
-	public WebElement ratingSliderRail;
+	private WebElement ratingSliderRail;
 
 	@FindBy(xpath = "//input[@name='availableDate']")
-	public WebElement availableDate;
+	private WebElement availableDate;
 
 	@FindBy(xpath = "//input[@name='availableTime']")
-	public WebElement availableTime;
+	private WebElement availableTime;
 
 	@FindBy(xpath = "//label[.//input[@name='termsAccepted']]")
-	public WebElement termsCheckBox;
+	private WebElement termsCheckBox;
 
 	@FindBy(xpath = "//button[text()='Submit']")
-	public WebElement submitButton;
+	private WebElement submitButton;
 
 	@FindBy(xpath = "//button[text()='Download']")
-	public WebElement downloadButton;
+	private WebElement downloadButton;
 
 	@FindBy(xpath = "//button[text()='Clear']")
-	public WebElement clearButton;
+	private WebElement clearButton;
 
 	@FindBy(css = "div.MuiAlert-colorSuccess .MuiAlert-message")
-	public WebElement successMessage;
+	private WebElement successMessage;
 
 	@FindBy(xpath = "//input[@name='rating' and @type='range']")
 	private WebElement ratingInput;
 
 	@FindBy(xpath = "//p[text()='Resume:']/following-sibling::a")
-	public WebElement resumeText;
+	private WebElement resumeText;
 
 	@FindBy(css = "p.Mui-error")
-	public WebElement invalidEmailText;
+	private WebElement invalidEmailText;
 
 	@FindBy(css = "div.MuiAlert-colorError .MuiAlert-message")
-	public WebElement pdfErrorText;
+	private WebElement pdfErrorText;
 
 	@FindBy(css = ".MuiChip-label")
-	public WebElement skillChip;
+	private WebElement skillChip;
 
 	@FindBy(css = ".MuiChip-deleteIcon")
-	public WebElement deleteChip;
+	private WebElement deleteChip;
 
 	@FindBy(css = "div[role='alert'].MuiAlert-colorSuccess .MuiAlert-message")
-	public WebElement submitSuccessMessage;
+	private WebElement submitSuccessMessage;
 
 	@FindBy(xpath = "//button[text()='Preview']")
-	public WebElement previewButton;
+	private WebElement previewButton;
 
 	// Constructor
 	public JobApplicationFormPage() {
@@ -200,6 +200,30 @@ public class JobApplicationFormPage extends CommonMethods {
 	public void clickPreviewButton() {
 		waitForClickability(previewButton);
 		click(previewButton);
+	}
+
+	public String getFirstNameValue() {
+		return firstNameInput.getAttribute("value");
+	}
+
+	public String getLastNameValue() {
+		return lastNameInput.getAttribute("value");
+	}
+
+	public String getEmailValue() {
+		return emailInput.getAttribute("value");
+	}
+
+	public String getMobileValue() {
+		return mobileInput.getAttribute("value");
+	}
+
+	public String getSalutationValue() {
+		return salutationInput.getAttribute("value");
+	}
+
+	public List<WebElement> getLanguageCheckboxes() {
+		return languages;
 	}
 
 	public void selectGender(String genderText) {
@@ -299,4 +323,39 @@ public class JobApplicationFormPage extends CommonMethods {
 		waitForClickability(jobRolesInput);
 	}
 
+	public boolean isRatingSliderDisplayed() {
+		try {
+			waitForVisibility(ratingSliderThumb);
+			return ratingSliderThumb.isDisplayed();
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean isTermCheckboxDisplayed() {
+		try {
+			waitForVisibility(termsCheckBox);
+			return termsCheckBox.isDisplayed();
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean isTermCheckboxSelected() {
+		try {
+			waitForVisibility(termsCheckBox);
+			return termsCheckBox.isSelected();
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean isSubmitBtnDisplayed() {
+		try {
+			waitForVisibility(submitButton);
+			return submitButton.isDisplayed();
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

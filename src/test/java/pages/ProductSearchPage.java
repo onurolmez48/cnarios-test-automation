@@ -15,34 +15,34 @@ import utils.ConfigsReader;
 public class ProductSearchPage extends CommonMethods {
 
 	@FindBy(xpath = "//ul[@role='listbox']/li")
-	public List<WebElement> category;
+	private List<WebElement> category;
 
 	@FindBy(xpath = "//*[text() = 'Products']/following-sibling::div/p[1]")
 	public List<WebElement> products;
 
 	@FindBy(xpath = "//div[@role='combobox']")
-	public WebElement categoryBox;
+	private WebElement categoryBox;
 
 	@FindBy(xpath = "//div[@aria-labelledby='category']")
-	public WebElement categoryDD;
+	private WebElement categoryDD;
 
 	@FindBy(xpath = "//input[@type='range' and @data-index='0']")
-	public WebElement minSlider;
+	private WebElement minSlider;
 
 	@FindBy(xpath = "//input[@type='range' and @data-index='1']")
 	public WebElement maxSlider;
 
 	@FindBy(css = "span.MuiButtonBase-root.MuiCheckbox-root")
-	public WebElement stockCheckBox;
+	private WebElement stockCheckBox;
 
 	@FindBy(css = "span.MuiTypography-root.MuiTypography-caption")
-	public List<WebElement> inStock;
+	private List<WebElement> inStock;
 
 	@FindBy(xpath = "//*[text() = 'Products']/following-sibling::div/p[2]")
-	public List<WebElement> infoCards;
+	private List<WebElement> infoCards;
 
 	@FindBy(xpath = "//button[@type='button' and text()='Reset Filters']")
-	public WebElement resetFilterBtn;
+	private WebElement resetFilterBtn;
 
 	public List<String> DEFAULT_PRODUCT_NAMES = Arrays.asList("Wireless Mouse", "Bluetooth Keyboard", "USB-C Charger",
 			"Running Shoes", "Tennis Racket", "Water Bottle", "Cotton T-Shirt", "Jeans", "Jacket", "Smartphone",
@@ -77,6 +77,61 @@ public class ProductSearchPage extends CommonMethods {
 		Actions actions = new Actions(driver);
 		actions.clickAndHold(minSlider).moveByOffset(minOffset, 0).release().perform();
 		actions.clickAndHold(maxSlider).moveByOffset(maxOffset, 0).release().perform();
+	}
+
+	public List<WebElement> getInfoCards() {
+		return infoCards;
+	}
+
+	public List<WebElement> getInStocks() {
+		return inStock;
+	}
+
+	public List<WebElement> getCategory() {
+		return category;
+	}
+
+	public void clickStockCBox() {
+		waitForClickability(productSearchPage.stockCheckBox);
+		click(productSearchPage.stockCheckBox);
+	}
+
+	public void clickCategoryDD() {
+		waitForClickability(productSearchPage.categoryDD);
+		click(productSearchPage.categoryDD);
+	}
+
+	public boolean isInfoCardEmpty() {
+		try {
+			return infoCards.isEmpty();
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean isStockCBEnables() {
+		try {
+			return stockCheckBox.isEnabled();
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public void clickResetFilter() {
+		waitForClickability(resetFilterBtn);
+		click(resetFilterBtn);
+	}
+
+	public String getMaxSliderAria() {
+		return maxSlider.getAttribute("aria-valuenow");
+	}
+
+	public String getMinSliderAria() {
+		return minSlider.getAttribute("aria-valuenow");
+	}
+
+	public String getCategoryBoxText() {
+		return categoryBox.getText();
 	}
 
 }
