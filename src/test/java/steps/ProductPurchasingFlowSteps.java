@@ -28,7 +28,7 @@ public class ProductPurchasingFlowSteps extends CommonMethods {
 		String expectedAmount = "120";
 		String expectedQuantity = "1";
 		Assert.assertTrue("The total amount does NOT matches",
-				productPurchasingPage.totalAmount.getText().contains(expectedAmount));
+				productPurchasingPage.getTotalAmountText().contains(expectedAmount));
 		Assert.assertEquals("The quantity does NOT matches", expectedQuantity, productPurchasingPage.getQuantityText());
 	}
 
@@ -50,33 +50,37 @@ public class ProductPurchasingFlowSteps extends CommonMethods {
 	@Then("User verify quantity increases and total updates")
 	public void user_verify_quantity_increases_and_total_updates() {
 		String expectedQuantity = "2";
-		Assert.assertEquals("The product quantity has not increased to 2!", expectedQuantity,productPurchasingPage.quantity.getText());
-		String singlePriceText = productPurchasingPage.singleProduct.getText();
+		Assert.assertEquals("The product quantity has not increased to 2!", expectedQuantity,
+				productPurchasingPage.getQuantityText());
+		String singlePriceText = productPurchasingPage.getSingleProductText();
 		String cleanedSinglePrice = singlePriceText.replaceAll("[^\\d]", "");
-		String totalAmountText = productPurchasingPage.totalAmount.getText();
+		String totalAmountText = productPurchasingPage.getTotalAmountText();
 		String cleanedTotalAmount = totalAmountText.replaceAll("[^\\d]", "");
-		
-		int expectedTotal = Integer.parseInt(cleanedSinglePrice) * Integer.parseInt(productPurchasingPage.quantity.getText());
-		Assert.assertEquals("The total amount has been calculated incorrectly!", expectedTotal, Integer.parseInt(cleanedTotalAmount));
+
+		int expectedTotal = Integer.parseInt(cleanedSinglePrice)
+				* Integer.parseInt(productPurchasingPage.getQuantityText());
+		Assert.assertEquals("The total amount has been calculated incorrectly!", expectedTotal,
+				Integer.parseInt(cleanedTotalAmount));
 		System.out.println("Single product price: $" + cleanedSinglePrice + "Product quantity: "
-				+ productPurchasingPage.quantity.getText() + " Total Amount: " + totalAmountText);
+				+ productPurchasingPage.getQuantityText() + " Total Amount: " + totalAmountText);
 	}
 
 	@Then("User click - button to decrease quantity")
 	public void user_click_button_to_decrease_quantity() {
-		waitForClickability(productPurchasingPage.decreaseButton);
-		click(productPurchasingPage.decreaseButton);
+		productPurchasingPage.clickDecreaseButton();
 	}
 
 	@Then("User verify quantity decrease and total updates")
 	public void user_verify_quantity_decrease_and_total_updates() {
 		String expectedQuantity = "1";
-		Assert.assertEquals("The product quantity has not increased to 2!", expectedQuantity, productPurchasingPage.getQuantityText());
-		String singlePriceText = productPurchasingPage.singleProduct.getText();
+		Assert.assertEquals("The product quantity has not increased to 2!", expectedQuantity,
+				productPurchasingPage.getQuantityText());
+		String singlePriceText = productPurchasingPage.getSingleProductText();
 		String cleanedSinglePrice = singlePriceText.replaceAll("[^\\d]", "");
-		String totalAmountText = productPurchasingPage.totalAmount.getText();
+		String totalAmountText = productPurchasingPage.getTotalAmountText();
 		String cleanedTotalAmount = totalAmountText.replaceAll("[^\\d]", "");
-		int expectedTotal = Integer.parseInt(cleanedSinglePrice) * Integer.parseInt(productPurchasingPage.getQuantityText());
+		int expectedTotal = Integer.parseInt(cleanedSinglePrice)
+				* Integer.parseInt(productPurchasingPage.getQuantityText());
 		Assert.assertEquals("The total amount has been calculated incorrectly!", expectedTotal,
 				Integer.parseInt(cleanedTotalAmount));
 	}
@@ -91,7 +95,7 @@ public class ProductPurchasingFlowSteps extends CommonMethods {
 
 	@Then("User verify cart count in navbar is updated")
 	public void user_verify_cart_count_in_navbar_is_updated() {
-		String classes = productPurchasingPage.navbarCount.getAttribute("class");
+		String classes = productPurchasingPage.getNavbarClass();
 		Assert.assertTrue(classes.contains("MuiBadge-invisible"));
 	}
 
@@ -107,11 +111,11 @@ public class ProductPurchasingFlowSteps extends CommonMethods {
 
 	@Then("User verify Proceed to Payment button is disabled")
 	public void user_verify_proceed_to_address_button_is_disabled() {
-		if (productPurchasingPage.proceedPaymentButton.isEnabled()) {
-			System.out.println(productPurchasingPage.proceedPaymentButton.getText() + " button is enabled!");
+		if (productPurchasingPage.isProceedButtoEnabled()) {
+			System.out.println(productPurchasingPage.getProceedButtonText() + " button is enabled!");
 			Assert.fail("Proceed to Payment button is enabled!");
 		} else {
-			System.out.println(productPurchasingPage.proceedPaymentButton.getText() + " button is disabled!");
+			System.out.println(productPurchasingPage.getProceedButtonText() + " button is disabled!");
 			Assert.assertTrue(true);
 		}
 	}
@@ -153,7 +157,7 @@ public class ProductPurchasingFlowSteps extends CommonMethods {
 	public void user_verify_failure_message_and_go_home_button_are_displayed() {
 		String actualFailure = productPurchasingPage.getFailureMessage();
 		Assert.assertTrue(actualFailure.replaceAll("[^a-zA-Z]", "").contains(ProductPurchasingMessages.PAYMENT_FAIL));
-		Assert.assertTrue(productPurchasingPage.backToHomeButton.isDisplayed());
+		Assert.assertTrue(productPurchasingPage.isBackToHomeButtonDisplayed());
 	}
 
 	@Then("User click Go Home button")
@@ -164,8 +168,8 @@ public class ProductPurchasingFlowSteps extends CommonMethods {
 	@Then("User verify product listing page is shown and navbar is empty")
 	public void user_verify_product_listing_page_is_shown_and_navbar_is_empty() {
 		waitForVisibility(productPurchasingPage.firstAddCartButton);
-		Assert.assertTrue("The addToCardButton not found!", productPurchasingPage.firstAddCartButton.isDisplayed());
-		String classes = productPurchasingPage.navbarCount.getAttribute("class");
+		Assert.assertTrue("The addToCardButton not found!", productPurchasingPage.isfirstAddCardButtonDisplayed());
+		String classes = productPurchasingPage.getNavbarClass();
 		Assert.assertTrue(classes.contains("MuiBadge-invisible"));
 	}
 

@@ -51,7 +51,7 @@ public class LoginPageSteps extends CommonMethods {
 
 	@Then("User verify the User Dashboard is shown")
 	public void user_verify_the_user_dashboard_is_shown() {
-		Assert.assertEquals("The messages does NOT matches", loginPage.dashboard.getText(),
+		Assert.assertEquals("The messages does NOT matches", loginPage.getDashboardText(),
 				LoginPageMessages.USER_DASHBOARD_MSG);
 	}
 
@@ -69,7 +69,7 @@ public class LoginPageSteps extends CommonMethods {
 
 	@Then("User verify the Admin Dashboard is shown")
 	public void user_verify_the_admin_dashboard_is_shown() {
-		Assert.assertEquals("The messages does NOT matches", loginPage.dashboard.getText(),
+		Assert.assertEquals("The messages does NOT matches", loginPage.getDashboardText(),
 				LoginPageMessages.ADMIN_DASHBOARD_MSG);
 	}
 
@@ -90,6 +90,6 @@ public class LoginPageSteps extends CommonMethods {
 
 	@Then("User verify fields are reset to empty")
 	public void user_verify_fields_are_reset_to_empty() {
-		Assert.assertTrue("Inputs are not EMPTY", loginPage.username.getAttribute("value").isEmpty());
+		Assert.assertTrue("Inputs are not EMPTY", loginPage.getUsernameValue().isEmpty());
 	}
 }

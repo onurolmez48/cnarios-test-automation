@@ -12,28 +12,28 @@ public class LoginPage extends CommonMethods {
 
 	// Elements
 	@FindBy(xpath = "//button[@type='button' and text()='Login']")
-	public WebElement loginBtn;
+	private WebElement loginBtn;
 
 	@FindBy(xpath = "//button[@type='button' and text()='Logout']")
-	public WebElement logoutBtn;
+	private WebElement logoutBtn;
 
 	@FindBy(xpath = "//div[text()='Both fields are required.']")
-	public WebElement emptyValidMsg;
+	private WebElement emptyValidMsg;
 
 	@FindBy(xpath = "//input[@type='text']")
-	public WebElement username;
+	private WebElement username;
 
 	@FindBy(xpath = "//input[@type='password']")
-	public WebElement password;
+	private WebElement password;
 
 	@FindBy(xpath = "//div[text()='Invalid username or password.']")
-	public WebElement invalidMsg;
+	private WebElement invalidMsg;
 
 	@FindBy(xpath = "//h5[@class='MuiTypography-root MuiTypography-h5 text-center font-bold css-jcahak']")
-	public WebElement welcomeMsg;
+	private WebElement welcomeMsg;
 
 	@FindBy(xpath = "//p[@class='MuiTypography-root MuiTypography-body1 font-medium css-1o5u7u9']")
-	public WebElement dashboard;
+	private WebElement dashboard;
 
 	// Constructor
 	public LoginPage() {
@@ -78,6 +78,14 @@ public class LoginPage extends CommonMethods {
 
 	public String getWelcomeMessageText() {
 		return welcomeMsg.getText();
+	}
+
+	public String getDashboardText() {
+		return dashboard.getText();
+	}
+
+	public String getUsernameValue() {
+		return username.getAttribute("value");
 	}
 
 	public boolean isLogoutButtonDisplayed() {

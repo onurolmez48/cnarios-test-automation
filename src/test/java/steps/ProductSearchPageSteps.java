@@ -30,7 +30,7 @@ public class ProductSearchPageSteps extends CommonMethods {
 
 	@Then("Verify all displayed products belong to {string}")
 	public void verify_all_displayed_products_belong_to(String string) {
-		for (WebElement elect : productSearchPage.infoCards) {
+		for (WebElement elect : productSearchPage.getInfoCards()) {
 			if (elect.getText().contains(string)) {
 				scrollDown(70);
 			}
@@ -58,7 +58,7 @@ public class ProductSearchPageSteps extends CommonMethods {
 
 	@Then("User verify all displayed product have rating >= {int}")
 	public void user_verify_all_displayed_product_have_rating(Integer int1) {
-		for (WebElement lists : productSearchPage.infoCards) {
+		for (WebElement lists : productSearchPage.getInfoCards()) {
 			String fullPart = lists.getText();
 			String[] part = fullPart.split(" ");
 			String rating = part[part.length - 1];
@@ -72,13 +72,12 @@ public class ProductSearchPageSteps extends CommonMethods {
 
 	@When("User enable In Stock Only filter")
 	public void user_enable_in_stock_only_filter() {
-		waitForClickability(productSearchPage.stockCheckBox);
-		click(productSearchPage.stockCheckBox);
+		productSearchPage.clickStockCBox();
 	}
 
 	@Then("User verify all displayed products are in stock")
 	public void user_verify_all_displayed_products_are_in_stock() {
-		for (WebElement stock : productSearchPage.inStock) {
+		for (WebElement stock : productSearchPage.getInStocks()) {
 			if (stock.getText().equals("In Stock")) {
 				System.out.println("Product In Stock");
 				break;
@@ -88,9 +87,8 @@ public class ProductSearchPageSteps extends CommonMethods {
 
 	@When("User apply category, price, and stock filters")
 	public void user_apply_category_price_and_stock_filters() {
-		waitForClickability(productSearchPage.categoryDD);
-		click(productSearchPage.categoryDD);
-		for (WebElement element : productSearchPage.category) {
+		productSearchPage.clickCategoryDD();
+		for (WebElement element : productSearchPage.getCategory()) {
 			if (element.getText().contains("Electronics")) {
 				waitForClickability(element);
 				click(element);
@@ -98,8 +96,7 @@ public class ProductSearchPageSteps extends CommonMethods {
 		}
 		Actions actions = new Actions(driver);
 		actions.clickAndHold(productSearchPage.maxSlider).moveByOffset(-391, 0).release().perform();
-		waitForClickability(productSearchPage.stockCheckBox);
-		click(productSearchPage.stockCheckBox);
+		productSearchPage.clickStockCBox();
 	}
 
 	@When("User click reset button")
@@ -109,26 +106,26 @@ public class ProductSearchPageSteps extends CommonMethods {
 
 	@When("User Verify all filters are cleared")
 	public void user_verify_all_filters_are_cleared() {
-		Assert.assertEquals(productSearchPage.categoryBox.getText(), "All");
-		Assert.assertEquals(productSearchPage.minSlider.getAttribute("aria-valuenow"), "0");
-		Assert.assertEquals(productSearchPage.maxSlider.getAttribute("aria-valuenow"), "80000");
-		Assert.assertTrue(productSearchPage.stockCheckBox.isEnabled());
+		Assert.assertEquals(productSearchPage.getCategoryBoxText(), "All");
+		Assert.assertEquals(productSearchPage.getMinSliderAria(), "0");
+		Assert.assertEquals(productSearchPage.getMaxSliderAria(), "80000");
+		Assert.assertTrue(productSearchPage.isStockCBEnables());
 	}
 
 	@Then("User verify full default product list is restored")
 	public void user_verify_full_default_product_list_is_restored() {
-		List<String> actualProductNames = productSearchPage.products.stream().map(WebElement::getText).collect(Collectors.toList());
+		List<String> actualProductNames = productSearchPage.products.stream().map(WebElement::getText)
+				.collect(Collectors.toList());
 		Assert.assertEquals("Products does NOT matches", actualProductNames, productSearchPage.DEFAULT_PRODUCT_NAMES);
 	}
 
 	@When("User apply category filter")
 	public void user_apply_category_filter() {
-		waitForClickability(productSearchPage.categoryDD);
-		click(productSearchPage.categoryDD);
+		productSearchPage.clickCategoryDD();
 		By listLocator = By.xpath("//ul[@role='listbox']");
 		waitForVisibility(listLocator);
 		List<String> categoryNames = new ArrayList<>();
-		for (WebElement element : productSearchPage.category) {
+		for (WebElement element : productSearchPage.getCategory()) {
 			String text = element.getText();
 			if (text != null && !text.trim().isEmpty() && !text.equalsIgnoreCase("All")) {
 				categoryNames.add(text);
@@ -139,14 +136,13 @@ public class ProductSearchPageSteps extends CommonMethods {
 		waitForInvisibility(listLocator);
 		List<String> productNames = new ArrayList<>();
 		for (String categoryName : categoryNames) {
-			waitForClickability(productSearchPage.categoryDD);
-			click(productSearchPage.categoryDD);
+			productSearchPage.clickCategoryDD();
 			waitForVisibility(listLocator);
 			WebElement categoryToClick = driver
 					.findElement(By.xpath("//ul[@role='listbox']/li[normalize-space()='" + categoryName + "']"));
 			click(categoryToClick);
 			wait(2);
-			for (WebElement cards : productSearchPage.infoCards) {
+			for (WebElement cards : productSearchPage.getInfoCards()) {
 				String cardsText = cards.getText().split("•")[0].trim();
 				if (cardsText != null && !cardsText.trim().isEmpty()) {
 					productNames.add(cardsText);
@@ -166,9 +162,9 @@ public class ProductSearchPageSteps extends CommonMethods {
 
 	@When("User verify each product card displays name")
 	public void user_verify_each_product_card_displays_name() {
-		click(productSearchPage.resetFilterBtn);
+		productSearchPage.clickResetFilter();
 		List<String> productStr = new ArrayList<>();
-		for (WebElement actualCards : productSearchPage.infoCards) {
+		for (WebElement actualCards : productSearchPage.getInfoCards()) {
 			productStr.add(actualCards.getText());
 			for (String cards : productStr) {
 				if (cards.contains("Electronics") && cards.contains("Clothing") && cards.contains("Sports")) {
@@ -182,7 +178,7 @@ public class ProductSearchPageSteps extends CommonMethods {
 	@When("User verify price is shown with currency symbol")
 	public void user_verify_price_is_shown_with_currency_symbol() {
 		List<String> symbols = new ArrayList<String>();
-		for (WebElement symbol : productSearchPage.infoCards) {
+		for (WebElement symbol : productSearchPage.getInfoCards()) {
 			symbols.add(symbol.getText());
 			if (symbols.toString().contains(" • ₹")) {
 				System.out.println("Currency is verified");
@@ -196,9 +192,9 @@ public class ProductSearchPageSteps extends CommonMethods {
 	@When("User verify category label is present")
 	public void user_verify_category_label_is_present() {
 		List<String> expectedCategories = Arrays.asList("Electronics", "Sports", "Clothing");
-		Assert.assertFalse("No product information was found on the page!", productSearchPage.infoCards.isEmpty());
+		Assert.assertFalse("No product information was found on the page!", productSearchPage.isInfoCardEmpty());
 		List<String> actualFullTexts = new ArrayList<>();
-		for (WebElement element : productSearchPage.infoCards) {
+		for (WebElement element : productSearchPage.getInfoCards()) {
 			actualFullTexts.add(element.getText());
 		}
 		for (String expectedCategory : expectedCategories) {
@@ -216,7 +212,7 @@ public class ProductSearchPageSteps extends CommonMethods {
 
 	@Then("User verify rating stars are visible and read-only")
 	public void user_verify_rating_stars_are_visible_and_read_only() {
-		boolean isEmpty = productSearchPage.infoCards.isEmpty();
+		boolean isEmpty = productSearchPage.isInfoCardEmpty();
 		if (isEmpty) {
 			Assert.fail("Cards is empty");
 		} else {

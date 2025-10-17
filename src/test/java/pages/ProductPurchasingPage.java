@@ -15,73 +15,73 @@ public class ProductPurchasingPage extends CommonMethods {
 
 	// Elements
 	@FindBy(css = "div.MuiCardContent-root")
-	public List<WebElement> productsCard;
+	private List<WebElement> productsCard;
 
 	@FindBy(css = "button:has(span.MuiBadge-root)")
-	public WebElement navbar;
+	private WebElement navbar;
 
 	@FindBy(xpath = "//p[preceding-sibling::button and following-sibling::button]")
-	public WebElement quantity;
+	private WebElement quantity;
 
 	@FindBy(css = "div.MuiCard-root h6.MuiTypography-h6")
-	public WebElement totalAmount;
+	private WebElement totalAmount;
 
 	@FindBy(css = "div.MuiCardContent-root > h6.MuiTypography-h6")
-	public List<WebElement> productNames;
+	private List<WebElement> productNames;
 
 	@FindBy(xpath = "//p[contains(@class, 'MuiTypography-body1')]/following-sibling::button[1]")
-	public WebElement increaseButton;
+	private WebElement increaseButton;
 
 	@FindBy(xpath = "(//div[contains(@class, 'MuiCardContent-root')]//button[contains(@class, 'MuiIconButton-root')])[1]")
-	public WebElement decreaseButton;
+	private WebElement decreaseButton;
 
 	@FindBy(xpath = "//div[contains(@class, 'MuiCardContent-root') and contains(@class, 'justify-between')]/p[1]")
-	public WebElement singleProduct;
+	private WebElement singleProduct;
 
 	@FindBy(xpath = "//button[text()='Proceed to Payment']")
-	public WebElement proceedPaymentButton;
+	private WebElement proceedPaymentButton;
 
 	@FindBy(xpath = "//button[text()='Proceed to Address']")
-	public WebElement proceedAddressButton;
+	private WebElement proceedAddressButton;
 
 	@FindBy(css = "span.MuiBadge-badge")
-	public WebElement navbarCount;
+	private WebElement navbarCount;
 
 	@FindBy(xpath = "//label[text()='First Name']/following-sibling::div/input")
-	public WebElement firstNameInput;
+	private WebElement firstNameInput;
 
 	@FindBy(xpath = "//label[text()='Last Name']/following-sibling::div/input")
-	public WebElement lastNameInput;
+	private WebElement lastNameInput;
 
 	@FindBy(xpath = "//label[text()='Address']/following-sibling::div/textarea[1]")
-	public WebElement addressInput;
+	private WebElement addressInput;
 
 	@FindBy(xpath = "//button[text()='Pay Now']")
-	public WebElement payNowButton;
+	private WebElement payNowButton;
 
 	@FindBy(xpath = "//h6[text()='Billing Details:']/following-sibling::p[1]")
-	public WebElement firstLastNameBill;
+	private WebElement firstLastNameBill;
 
 	@FindBy(xpath = "//h6[text()='Billing Details:']/following-sibling::p[2]")
-	public WebElement addressBill;
+	private WebElement addressBill;
 
 	@FindBy(xpath = "//h6[text()='Order Summary:']/following-sibling::h6")
-	public WebElement totalAmountBill;
+	private WebElement totalAmountBill;
 
 	@FindBy(css = ".MuiTypography-h5")
-	public WebElement successMessage;
+	private WebElement successMessage;
 
 	@FindBy(xpath = "//button[text()='Cancel']")
-	public WebElement cancelButton;
+	private WebElement cancelButton;
 
 	@FindBy(xpath = "//h6[contains(text(), 'Payment Failed!')]")
-	public WebElement failureElement;
+	private WebElement failureElement;
 
 	@FindBy(xpath = "//button[text()='Back to Home']")
-	public WebElement backToHomeButton;
+	private WebElement backToHomeButton;
 
 	@FindBy(xpath = "//button[text()='Back to Home']")
-	public WebElement goHomeButton;
+	private WebElement goHomeButton;
 
 	@FindBy(xpath = "//button[contains(@class, 'MuiButton-containedPrimary')][1]")
 	public WebElement firstAddCartButton;
@@ -92,12 +92,12 @@ public class ProductPurchasingPage extends CommonMethods {
 	}
 
 	// Methods
-	
+
 	public void navigateUrl() {
 		String url = ConfigsReader.getProperty("baseUrl") + ConfigsReader.getProperty("productPurchasingUrl");
 		driver.get(url);
 	}
-	
+
 	public void goToCart() {
 		waitForClickability(navbar);
 		click(navbar);
@@ -133,6 +133,11 @@ public class ProductPurchasingPage extends CommonMethods {
 		click(goHomeButton);
 	}
 
+	public void clickDecreaseButton() {
+		waitForClickability(decreaseButton);
+		click(decreaseButton);
+	}
+
 	public void increaseFirstProductQuantity(int count) {
 		for (int i = 0; i < count; i++) {
 			click(increaseButton);
@@ -161,6 +166,49 @@ public class ProductPurchasingPage extends CommonMethods {
 
 	public String getQuantityText() {
 		return quantity.getText();
+	}
+
+	public String getTotalAmountText() {
+		return totalAmount.getText();
+	}
+
+	public String getSingleProductText() {
+		return singleProduct.getText();
+	}
+
+	public String getNavbarClass() {
+		return navbarCount.getAttribute("class");
+	}
+
+	public String getProceedButtonText() {
+		return proceedPaymentButton.getText();
+	}
+
+	public boolean isProceedButtoEnabled() {
+		try {
+			waitForVisibility(proceedPaymentButton);
+			return proceedPaymentButton.isEnabled();
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean isfirstAddCardButtonDisplayed() {
+		try {
+			waitForVisibility(firstAddCartButton);
+			return firstAddCartButton.isDisplayed();
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean isBackToHomeButtonDisplayed() {
+		try {
+			waitForVisibility(backToHomeButton);
+			return backToHomeButton.isDisplayed();
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	public void fillShippingDetailsAndProceed(String firstName, String lastName, String address) {

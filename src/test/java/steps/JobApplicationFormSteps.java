@@ -74,7 +74,7 @@ public class JobApplicationFormSteps extends CommonMethods {
 	@When("User set rating slider to {int}")
 	public void user_set_rating_slider_to(Integer rating) {
 		jobApplicationPage.setRatingSlider(rating);
-		Assert.assertTrue("Slider is NOT displayed!!", jobApplicationPage.ratingSliderThumb.isDisplayed());
+		Assert.assertTrue("Slider is NOT displayed!!", jobApplicationPage.isRatingSliderDisplayed());
 	}
 
 	@When("User pick valid date {string} and time {string}")
@@ -86,13 +86,13 @@ public class JobApplicationFormSteps extends CommonMethods {
 	@When("User Check I accept terms checkbox")
 	public void user_check_i_accept_terms_checkbox() {
 		jobApplicationPage.clickTerms();
-		Assert.assertTrue("Terms checkbos is NOT displayed!!", jobApplicationPage.termsCheckBox.isDisplayed());
+		Assert.assertTrue("Terms checkbos is NOT displayed!!", jobApplicationPage.isTermCheckboxDisplayed());
 	}
 
 	@When("User click Submit")
 	public void user_click_submit() {
 		jobApplicationPage.clickSubmit();
-		Assert.assertTrue("Submit button is NOT displayed!!", jobApplicationPage.submitButton.isDisplayed());
+		Assert.assertTrue("Submit button is NOT displayed!!", jobApplicationPage.isSubmitBtnDisplayed());
 	}
 
 	@Then("User verify success snackbar message")
@@ -222,15 +222,15 @@ public class JobApplicationFormSteps extends CommonMethods {
 
 	@Then("User verify all fields reset to defaults")
 	public void user_verify_all_fields_reset_to_defaults() {
-		Assert.assertEquals(jobApplicationPage.firstNameInput.getAttribute("value"), "");
-		Assert.assertEquals(jobApplicationPage.lastNameInput.getAttribute("value"), "");
-		Assert.assertEquals(jobApplicationPage.emailInput.getAttribute("value"), "");
-		Assert.assertEquals(jobApplicationPage.mobileInput.getAttribute("value"), "");
-		Assert.assertEquals(jobApplicationPage.salutationInput.getAttribute("value"), "");
-		for (WebElement cb : jobApplicationPage.languages) {
+		Assert.assertEquals(jobApplicationPage.getFirstNameValue(), "");
+		Assert.assertEquals(jobApplicationPage.getLastNameValue(), "");
+		Assert.assertEquals(jobApplicationPage.getEmailValue(), "");
+		Assert.assertEquals(jobApplicationPage.getMobileValue(), "");
+		Assert.assertEquals(jobApplicationPage.getSalutationValue(), "");
+		for (WebElement cb : jobApplicationPage.getLanguageCheckboxes()) {
 			Assert.assertFalse("Checkboxes still select!!!", cb.isSelected());
 		}
-		Assert.assertFalse("Terms checkboxes still select!!", jobApplicationPage.termsCheckBox.isSelected());
+		Assert.assertFalse("Terms checkboxes still select!!", jobApplicationPage.isTermCheckboxSelected());
 	}
 
 	@When("User click Preview button")
